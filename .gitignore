@@ -107,3 +107,4 @@ dist
 /config/config.json
 .env
 package-lock.json
+/auth/key
