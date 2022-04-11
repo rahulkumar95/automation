@@ -27,7 +27,7 @@ passport.use(
         }
         let results = [];
         if (!utils.isEmpty(result)) {
-          results = utils.constructJSONFromQueryResult(result);
+          results = utils.constructJSONFromQueryResult(result)[[0]];
         }
         resolve(results);
       });
@@ -36,7 +36,7 @@ passport.use(
         if (utils.isEmpty(userDetails)) {
           return cb(null, false);
         }
-        return cb(null, userDetails[0]);
+        return cb(null, userDetails);
       })
       .catch((err) => cb(err)),
   ),

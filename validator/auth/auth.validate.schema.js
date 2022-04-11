@@ -13,7 +13,18 @@ const saveUserValidationSchema = Joi.object().keys({
   email: validationConstant.EMAIL_VALIDATION.required(),
   password: validationConstant.PASSWORD_VALIDATION.required(),
   active: Joi.number().valid(1, 0),
+  role: Joi.string().required(),
+});
+
+const listUserValidationSchema = Joi.object().keys({
+  first_name: Joi.string(),
+  last_name: Joi.string(),
+  email: validationConstant.EMAIL_VALIDATION,
+  active: Joi.number().valid(1, 0),
+  role: Joi.string(),
+  _id: Joi.number().integer().positive(),
 });
 
 exports.loginValidationSchema = loginValidationSchema;
 exports.saveUserValidationSchema = saveUserValidationSchema;
+exports.listUserValidationSchema = listUserValidationSchema;

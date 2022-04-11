@@ -18,5 +18,16 @@ const validateSaveUser = async (req, res, next) => {
   return next();
 };
 
+const validateListUser = async (req, res, next) => {
+  const data = req.query;
+  const errors = await utils.joiValidate(
+    data,
+    Schema.listUserValidationSchema,
+  );
+  if (errors) throw errors;
+  return next();
+};
+
 exports.validateLogin = validateLogin;
 exports.validateSaveUser = validateSaveUser;
+exports.validateListUser = validateListUser;

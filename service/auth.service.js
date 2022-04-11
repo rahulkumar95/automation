@@ -13,6 +13,7 @@ const getTokenService = async (currentUser) => {
       'last_name',
       'email',
       'active',
+      'role',
     ]),
     null,
   );
@@ -30,7 +31,6 @@ const checkExistingUser = async (email) => new Promise((resolve, reject) => {
     if (!utils.isEmpty(result)) {
       results = utils.constructJSONFromQueryResult(result)[[0]];
     }
-    console.log('\n\nresults ', results);
     resolve(results);
   });
 });
@@ -71,6 +71,34 @@ const saveUserService = async (requestBody) => new Promise((resolve, reject) => 
   });
 });
 
+const listUserService = (requestQuery) => new Promise((resolve, reject) => {
+  let query = '';
+  Object.keys(requestQuery).forEach((key) => {
+    query += `${key}='${requestQuery[key]}' and `;
+  });
+
+  query = query.substring(0, query.lastIndexOf('and'));
+
+  const columns = ['_id',
+    'first_name',
+    'last_name',
+    'email',
+    'active',
+    'role'];
+
+  dbConnection.query(`select ${columns} from user where ${query}`, (error, result) => {
+    if (error) {
+      reject(error);
+    }
+    let results = [];
+    if (!utils.isEmpty(result)) {
+      results = utils.constructJSONFromQueryResult(result);
+    }
+    resolve(results);
+  });
+});
+
 exports.loginService = loginService;
 exports.saveUserService = saveUserService;
 exports.checkExistingUser = checkExistingUser;
+exports.listUserService = listUserService;

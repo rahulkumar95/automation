@@ -10,5 +10,12 @@ const saveUserResponse = (res, userData) => {
     .json(userData);
 };
 
+const listUserResponse = (res, userData) => {
+  res
+    .status(200)
+    .json(userData);
+};
+
 exports.newTokenResponse = newTokenResponse;
 exports.saveUserResponse = saveUserResponse;
+exports.listUserResponse = listUserResponse;

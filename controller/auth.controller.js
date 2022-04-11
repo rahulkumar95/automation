@@ -34,5 +34,12 @@ const saveUser = async (req, res) => {
   authResponseHandler.saveUserResponse(res, await authService.saveUserService(body));
 };
 
+const listuser = async (req, res) => {
+  const { query } = req;
+
+  authResponseHandler.listUserResponse(res, await authService.listUserService(query));
+};
+
 exports.login = login;
 exports.saveUser = saveUser;
+exports.listuser = listuser;

@@ -12,7 +12,17 @@ module.exports = (router) => {
 
   router.post(
     '/user/save',
+    auth.isAuthorized,
+    auth.isAuthorizedPermission('user', 'create'),
     authValidator.validateSaveUser,
     authController.saveUser,
+  );
+
+  router.get(
+    '/user/list',
+    auth.isAuthorized,
+    auth.isAuthorizedPermission('user', 'read'),
+    authValidator.validateListUser,
+    authController.listuser,
   );
 };
