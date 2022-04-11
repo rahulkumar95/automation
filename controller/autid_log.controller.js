@@ -1,10 +1,10 @@
 const auditLogResposneHandler = require('../response_handler/audit_log.response');
 const auditLogService = require('../service/audit_log.service');
 
-const getAuditLog = async (req, res) => {
+const listAuditLog = async (req, res) => {
   const { query } = req;
 
-  auditLogResposneHandler.getAuditLogResponse(res, await auditLogService.getAuditLog(query));
+  auditLogResposneHandler.listAuditLogResponse(res, await auditLogService.listAuditLog(query));
 };
 
 const saveAuditLog = async (req, res) => {
@@ -13,5 +13,12 @@ const saveAuditLog = async (req, res) => {
   auditLogResposneHandler.saveAuditLogResponse(res, await auditLogService.saveAuditLog(body));
 };
 
-exports.getAuditLog = getAuditLog;
+const getAuditLog = async (req, res) => {
+  const { params } = req;
+
+  auditLogResposneHandler.getAuditLogResponse(res, await auditLogService.getAuditLog(params));
+};
+
+exports.listAuditLog = listAuditLog;
 exports.saveAuditLog = saveAuditLog;
+exports.getAuditLog = getAuditLog;

@@ -1,7 +1,7 @@
 const dbConnection = require('../dbConection');
 const utils = require('../utils');
 
-const listAuditLog = (requestQuery) => new Promise((resolve, reject) => {
+const listEmployee = (requestQuery) => new Promise((resolve, reject) => {
   let query = '';
   Object.keys(requestQuery).forEach((key) => {
     query += `${key}='${requestQuery[key]}' and `;
@@ -12,7 +12,7 @@ const listAuditLog = (requestQuery) => new Promise((resolve, reject) => {
     query = `where ${query}`;
   }
 
-  dbConnection.query(`select * from audit_log ${query}`, (error, result) => {
+  dbConnection.query(`select * from employee ${query}`, (error, result) => {
     if (error) {
       reject(error);
     }
@@ -24,12 +24,12 @@ const listAuditLog = (requestQuery) => new Promise((resolve, reject) => {
   });
 });
 
-const saveAuditLog = (requestBody) => new Promise((resolve, reject) => {
+const saveEmployee = (requestBody) => new Promise((resolve, reject) => {
   const columns = Object.keys(requestBody);
   let values = Object.values(requestBody);
   values = values.map((ele) => `"${ele}"`);
 
-  const query = `insert into audit_log (${columns}) values (${values})`;
+  const query = `insert into employee (${columns}) values (${values})`;
 
   dbConnection.query(query, (error, result) => {
     if (error) {
@@ -39,8 +39,8 @@ const saveAuditLog = (requestBody) => new Promise((resolve, reject) => {
   });
 });
 
-const getAuditLog = (requestParams) => new Promise((resolve, reject) => {
-  dbConnection.query(`select * from audit_log where _id='${requestParams['_id']}'`, (error, result) => {
+const checkEmployeeUsername = (requestQuery) => new Promise((resolve, reject) => {
+  dbConnection.query(`select * from employee where username='${requestQuery.username}'`, (error, result) => {
     if (error) {
       reject(error);
     }
@@ -52,6 +52,6 @@ const getAuditLog = (requestParams) => new Promise((resolve, reject) => {
   });
 });
 
-exports.listAuditLog = listAuditLog;
-exports.saveAuditLog = saveAuditLog;
-exports.getAuditLog = getAuditLog;
+exports.listEmployee = listEmployee;
+exports.saveEmployee = saveEmployee;
+exports.checkEmployeeUsername = checkEmployeeUsername;

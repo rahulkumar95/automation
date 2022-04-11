@@ -78,6 +78,9 @@ const listUserService = (requestQuery) => new Promise((resolve, reject) => {
   });
 
   query = query.substring(0, query.lastIndexOf('and'));
+  if (!utils.isEmpty(query)) {
+    query = `where ${query}`;
+  }
 
   const columns = ['_id',
     'first_name',
@@ -86,7 +89,7 @@ const listUserService = (requestQuery) => new Promise((resolve, reject) => {
     'active',
     'role'];
 
-  dbConnection.query(`select ${columns} from user where ${query}`, (error, result) => {
+  dbConnection.query(`select ${columns} from user ${query}`, (error, result) => {
     if (error) {
       reject(error);
     }

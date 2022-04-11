@@ -1,5 +1,5 @@
 const auditLogController = require('../controller/autid_log.controller');
-
+const auditLogValidator = require('../validator/audit/audit.validate');
 const auth = require('../auth/auth');
 
 module.exports = (router) => {
@@ -7,13 +7,23 @@ module.exports = (router) => {
     '/audit/list/',
     auth.isAuthorized,
     auth.isAuthorizedPermission('audit', 'read'),
-    auditLogController.getAuditLog,
+    auditLogValidator.validateListAuditLog,
+    auditLogController.listAuditLog,
   );
 
   router.post(
     '/audit/save/',
     auth.isAuthorized,
     auth.isAuthorizedPermission('audit', 'create'),
+    auditLogValidator.validateSaveAuditLog,
     auditLogController.saveAuditLog,
+  );
+
+  router.get(
+    '/audit/get/:_id',
+    auth.isAuthorized,
+    auth.isAuthorizedPermission('audit', 'read'),
+    auditLogValidator.validateGetAuditLog,
+    auditLogController.getAuditLog,
   );
 };

@@ -1,4 +1,4 @@
-const getAuditLogResponse = (res, response) => {
+const listAuditLogResponse = (res, response) => {
   res
     .status(200)
     .json(response);
@@ -10,5 +10,12 @@ const saveAuditLogResponse = (res, response) => {
     .json(response);
 };
 
-exports.getAuditLogResponse = getAuditLogResponse;
+const getAuditLogResponse = (res, response) => {
+  res
+    .status(200)
+    .json(response);
+};
+
+exports.listAuditLogResponse = listAuditLogResponse;
 exports.saveAuditLogResponse = saveAuditLogResponse;
+exports.getAuditLogResponse = getAuditLogResponse;

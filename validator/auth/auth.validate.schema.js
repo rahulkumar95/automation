@@ -9,7 +9,7 @@ const loginValidationSchema = Joi.object().keys({
 
 const saveUserValidationSchema = Joi.object().keys({
   first_name: Joi.string().min(3).max(50).required(),
-  last_name: Joi.string().min(1).max(50),
+  last_name: Joi.string().min(1).max(50).required(),
   email: validationConstant.EMAIL_VALIDATION.required(),
   password: validationConstant.PASSWORD_VALIDATION.required(),
   active: Joi.number().valid(1, 0),
