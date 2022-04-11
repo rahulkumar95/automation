@@ -1,5 +1,6 @@
 const dbConnection = require('../dbConection');
 const utils = require('../utils');
+const email = require('../email');
 
 const listEmployee = (requestQuery) => new Promise((resolve, reject) => {
   let query = '';
@@ -35,6 +36,13 @@ const saveEmployee = (requestBody) => new Promise((resolve, reject) => {
     if (error) {
       reject(error);
     }
+
+    // const from = '';
+    // const to = '';
+    // const subject = '';
+    // const text = '';
+    // email.sendMail(from, to, subject, text);
+
     resolve(requestBody);
   });
 });
