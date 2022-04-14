@@ -20,10 +20,18 @@ module.exports = (router) => {
   );
 
   router.get(
-    '/audit/get/:_id',
+    '/audit/get/:id',
     auth.isAuthorized,
     auth.isAuthorizedPermission('audit', 'read'),
     auditLogValidator.validateGetAuditLog,
     auditLogController.getAuditLog,
+  );
+
+  router.get(
+    '/audit/export/',
+    auth.isAuthorized,
+    auth.isAuthorizedPermission('audit', 'read'),
+    auditLogValidator.validateExportAuditLog,
+    auditLogController.exportAuditLog,
   );
 };

@@ -108,3 +108,4 @@ dist
 .env
 package-lock.json
 /auth/key
+/reports/

@@ -25,4 +25,20 @@ module.exports = (router) => {
     authValidator.validateListUser,
     authController.listuser,
   );
+
+  router.post(
+    '/user/edit/',
+    auth.isAuthorized,
+    auth.isAuthorizedPermission('user', 'update'),
+    authValidator.validateEditUser,
+    authController.editUser,
+  );
+
+  router.post(
+    '/user/delete/',
+    auth.isAuthorized,
+    auth.isAuthorizedPermission('user', 'delete'),
+    authValidator.validateDeleteUser,
+    authController.deleteUser,
+  );
 };

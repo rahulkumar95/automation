@@ -28,6 +28,17 @@ const validateGetAuditLog = async (req, res, next) => {
   return next();
 };
 
+const validateExportAuditLog = async (req, res, next) => {
+  const data = req.query;
+  const errors = await utils.joiValidate(
+    data,
+    Schema.exportAuditLogValidationSchema,
+  );
+  if (errors) throw errors;
+  return next();
+};
+
 exports.validateListAuditLog = validateListAuditLog;
 exports.validateSaveAuditLog = validateSaveAuditLog;
 exports.validateGetAuditLog = validateGetAuditLog;
+exports.validateExportAuditLog = validateExportAuditLog;

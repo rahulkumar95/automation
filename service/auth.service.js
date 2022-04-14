@@ -8,7 +8,7 @@ const getTokenService = async (currentUser) => {
 
   const accessToken = await utils.generateJWTToken(
     utils.pick(user, [
-      '_id',
+      'id',
       'first_name',
       'last_name',
       'email',
@@ -82,7 +82,7 @@ const listUserService = (requestQuery) => new Promise((resolve, reject) => {
     query = `where ${query}`;
   }
 
-  const columns = ['_id',
+  const columns = ['id',
     'first_name',
     'last_name',
     'email',
@@ -101,7 +101,36 @@ const listUserService = (requestQuery) => new Promise((resolve, reject) => {
   });
 });
 
+const editUserService = (requestBody) => new Promise((resolve, reject) => {
+  const { id } = requestBody;
+  let valuesToUpdate = '';
+  Object.keys(requestBody).forEach((key) => {
+    valuesToUpdate += `${key}='${requestBody[key]}' , `;
+  });
+  valuesToUpdate = valuesToUpdate.substring(0, valuesToUpdate.lastIndexOf(','));
+
+  dbConnection.query(`update user set ${valuesToUpdate} where id=${id};`, (error, result) => {
+    if (error) {
+      reject(error);
+    }
+    resolve(requestBody);
+  });
+});
+
+const deleteUserService = (requestBody) => new Promise((resolve, reject) => {
+  const { id } = requestBody;
+
+  dbConnection.query(`delete from user where id=${id};`, (error, result) => {
+    if (error) {
+      reject(error);
+    }
+    resolve(requestBody);
+  });
+});
+
 exports.loginService = loginService;
 exports.saveUserService = saveUserService;
 exports.checkExistingUser = checkExistingUser;
 exports.listUserService = listUserService;
+exports.editUserService = editUserService;
+exports.deleteUserService = deleteUserService;

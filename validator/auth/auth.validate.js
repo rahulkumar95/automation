@@ -28,6 +28,28 @@ const validateListUser = async (req, res, next) => {
   return next();
 };
 
+const validateEditUser = async (req, res, next) => {
+  const data = req.body;
+  const errors = await utils.joiValidate(
+    data,
+    Schema.editUserValidationSchema,
+  );
+  if (errors) throw errors;
+  return next();
+};
+
+const validateDeleteUser = async (req, res, next) => {
+  const data = req.body;
+  const errors = await utils.joiValidate(
+    data,
+    Schema.deleteUserValidationSchema,
+  );
+  if (errors) throw errors;
+  return next();
+};
+
 exports.validateLogin = validateLogin;
 exports.validateSaveUser = validateSaveUser;
 exports.validateListUser = validateListUser;
+exports.validateEditUser = validateEditUser;
+exports.validateDeleteUser = validateDeleteUser;

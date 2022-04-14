@@ -40,6 +40,20 @@ const listuser = async (req, res) => {
   authResponseHandler.listUserResponse(res, await authService.listUserService(query));
 };
 
+const editUser = async (req, res) => {
+  const { body } = req;
+
+  authResponseHandler.editUserResponse(res, await authService.editUserService(body));
+};
+
+const deleteUser = async (req, res) => {
+  const { body } = req;
+
+  authResponseHandler.deleteUserResponse(res, await authService.deleteUserService(body));
+};
+
 exports.login = login;
 exports.saveUser = saveUser;
 exports.listuser = listuser;
+exports.editUser = editUser;
+exports.deleteUser = deleteUser;

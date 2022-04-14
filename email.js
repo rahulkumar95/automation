@@ -7,8 +7,8 @@ const transporter = nodemailer.createTransport({
   secure: false,
   requireTLS: true,
   auth: {
-    user: global.gCondig.mail.email,
-    pass: global.gCondig.mail.app_password,
+    user: global.gConfig.mail.email,
+    pass: global.gConfig.mail.app_password,
   },
 });
 

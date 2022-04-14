@@ -19,6 +19,13 @@ const getAuditLog = async (req, res) => {
   auditLogResposneHandler.getAuditLogResponse(res, await auditLogService.getAuditLog(params));
 };
 
+const exportAuditLog = async (req, res) => {
+  const { query } = req;
+
+  auditLogResposneHandler.exportAuditLogResponse(res, await auditLogService.exportAuditLog(query));
+};
+
 exports.listAuditLog = listAuditLog;
 exports.saveAuditLog = saveAuditLog;
 exports.getAuditLog = getAuditLog;
+exports.exportAuditLog = exportAuditLog;

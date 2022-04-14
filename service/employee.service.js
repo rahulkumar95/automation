@@ -47,6 +47,22 @@ const saveEmployee = (requestBody) => new Promise((resolve, reject) => {
   });
 });
 
+const editEmployee = (requestBody) => new Promise((resolve, reject) => {
+  const { id } = requestBody;
+  let valuesToUpdate = '';
+  Object.keys(requestBody).forEach((key) => {
+    valuesToUpdate += `${key}='${requestBody[key]}' , `;
+  });
+  valuesToUpdate = valuesToUpdate.substring(0, valuesToUpdate.lastIndexOf(','));
+
+  dbConnection.query(`update employee set ${valuesToUpdate} where id=${id};`, (error, result) => {
+    if (error) {
+      reject(error);
+    }
+    resolve(requestBody);
+  });
+});
+
 const checkEmployeeUsername = (requestQuery) => new Promise((resolve, reject) => {
   dbConnection.query(`select * from employee where username='${requestQuery.username}'`, (error, result) => {
     if (error) {
@@ -60,6 +76,19 @@ const checkEmployeeUsername = (requestQuery) => new Promise((resolve, reject) =>
   });
 });
 
+const deleteEmployee = (requestBody) => new Promise((resolve, reject) => {
+  const { id } = requestBody;
+
+  dbConnection.query(`delete from employee where id=${id};`, (error, result) => {
+    if (error) {
+      reject(error);
+    }
+    resolve(requestBody);
+  });
+});
+
 exports.listEmployee = listEmployee;
 exports.saveEmployee = saveEmployee;
+exports.editEmployee = editEmployee;
 exports.checkEmployeeUsername = checkEmployeeUsername;
+exports.deleteEmployee = deleteEmployee;

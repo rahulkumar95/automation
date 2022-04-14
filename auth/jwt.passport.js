@@ -21,7 +21,7 @@ passport.use(
       algorithms: ['RS256'],
     },
     async (jwtPayload, cb) => new Promise((resolve, reject) => {
-      dbConnection.query(`select * from user where _id='${jwtPayload['_id']} and active=1'`, (error, result) => {
+      dbConnection.query(`select * from user where id='${jwtPayload.id} and active=1'`, (error, result) => {
         if (error) {
           reject(error);
         }

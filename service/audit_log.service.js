@@ -40,7 +40,7 @@ const saveAuditLog = (requestBody) => new Promise((resolve, reject) => {
 });
 
 const getAuditLog = (requestParams) => new Promise((resolve, reject) => {
-  dbConnection.query(`select * from audit_log where _id='${requestParams['_id']}'`, (error, result) => {
+  dbConnection.query(`select * from audit_log where id='${requestParams.id}'`, (error, result) => {
     if (error) {
       reject(error);
     }
@@ -52,6 +52,28 @@ const getAuditLog = (requestParams) => new Promise((resolve, reject) => {
   });
 });
 
+const exportAuditLog = (requestQuery) => new Promise((resolve, reject) => {
+  listAuditLog(requestQuery).then(async (auditLogResults) => {
+    const timeStamp = Date.now();
+    const reportDirectory = await utils.getReportDirectory();
+    try {
+      const generatedDocFilelocation = await utils.exportToExcel(
+        reportDirectory,
+        'AuditLog',
+        'Data',
+        auditLogResults,
+        timeStamp,
+        false,
+      );
+      resolve([reportDirectory, generatedDocFilelocation]);
+    } catch (err) {
+      utils.removeDirectory(reportDirectory); // removes the entire directory at temp folder
+      reject(err);
+    }
+  }).catch((error) => reject(error));
+});
+
 exports.listAuditLog = listAuditLog;
 exports.saveAuditLog = saveAuditLog;
 exports.getAuditLog = getAuditLog;
+exports.exportAuditLog = exportAuditLog;

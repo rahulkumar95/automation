@@ -2,6 +2,10 @@ const _ = require('lodash');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
+const { PythonShell } = require('python-shell');
+const path = require('path');
+const fsExtra = require('fs-extra');
+
 const constant = require('./constant/constant');
 
 const isEmpty = (data) => _.isEmpty(data);
@@ -103,6 +107,81 @@ const generateSaltHash = (password) => {
   return [salt, hash];
 };
 
+const exportToExcel = async (
+  tempExcelDocFolder,
+  excelFileName,
+  excelSheetName,
+  jsonData,
+  timeStamp,
+  isTemplate,
+) => {
+  const outputJSONFileName = `${tempExcelDocFolder}${excelFileName}_${timeStamp}.json`;
+  const outputExcelFileName = `${tempExcelDocFolder}${excelFileName}_${timeStamp}.xlsx`;
+
+  try {
+    fs.writeFileSync(outputJSONFileName, JSON.stringify(jsonData));
+  } catch (e) {
+    throw new Error(e);
+  }
+
+  const options = {
+    pythonOptions: ['-u'],
+    scriptPath: '',
+    args: [outputExcelFileName, excelSheetName, outputJSONFileName],
+  };
+  if (isTemplate) {
+    options.args.push(isTemplate);
+  }
+
+  await new Promise((resolve, reject) => {
+    PythonShell.run('excelpy_write.py', options, (err, result) => {
+      if (err) reject(err);
+      else {
+        resolve();
+      }
+    });
+  }).catch((err) => {
+    throw new Error(err);
+  });
+
+  return outputExcelFileName;
+};
+
+const createDirectory = async (dir) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+};
+
+const getReportDirectory = async () => {
+  const excelFolderLocation = 'reports';
+  await createDirectory(excelFolderLocation);
+  const excelFileLocation = `${excelFolderLocation}${path.sep}audit_log_${Date.now()}${path.sep}`;
+  await createDirectory(excelFileLocation);
+  return excelFileLocation;
+};
+
+const emptyDirectory = async (filePath) => {
+  try {
+    await fsExtra.emptyDir(filePath);
+  } catch (e) {
+    return false;
+  }
+  return true;
+};
+
+const removeDirectory = async (filePath, errorLogger) => {
+  let status = false;
+  if (await emptyDirectory(filePath)) {
+    fs.rmdir(filePath, (err) => {
+      if (err) {
+        status = err;
+      } else status = true;
+    });
+  }
+  return status;
+};
+
 exports.processJoiError = processJoiError;
 exports.isEmpty = isEmpty;
 exports.constructJSONFromQueryResult = constructJSONFromQueryResult;
@@ -115,3 +194,7 @@ exports.joiValidate = joiValidate;
 exports.generateJWTToken = generateJWTToken;
 exports.removeFieldsFromObject = removeFieldsFromObject;
 exports.generateSaltHash = generateSaltHash;
+exports.exportToExcel = exportToExcel;
+exports.getReportDirectory = getReportDirectory;
+exports.emptyDirectory = emptyDirectory;
+exports.removeDirectory = removeDirectory;

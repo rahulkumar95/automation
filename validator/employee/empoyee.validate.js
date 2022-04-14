@@ -18,6 +18,16 @@ const validateSaveEmployee = async (req, res, next) => {
   return next();
 };
 
+const validateEditEmployee = async (req, res, next) => {
+  const data = req.body;
+  const errors = await utils.joiValidate(
+    data,
+    Schema.editEmployeeValidationSchema,
+  );
+  if (errors) throw errors;
+  return next();
+};
+
 const validateCheckEmployeeUsername = async (req, res, next) => {
   const data = req.query;
   const errors = await utils.joiValidate(
@@ -28,6 +38,18 @@ const validateCheckEmployeeUsername = async (req, res, next) => {
   return next();
 };
 
+const validateDeleteEmployee = async (req, res, next) => {
+  const data = req.body;
+  const errors = await utils.joiValidate(
+    data,
+    Schema.deleteEmployeeValidationSchema,
+  );
+  if (errors) throw errors;
+  return next();
+};
+
 exports.validateListEmployee = validateListEmployee;
 exports.validateSaveEmployee = validateSaveEmployee;
+exports.validateEditEmployee = validateEditEmployee;
 exports.validateCheckEmployeeUsername = validateCheckEmployeeUsername;
+exports.validateDeleteEmployee = validateDeleteEmployee;
