@@ -103,6 +103,21 @@ const listUserService = (requestQuery) => new Promise((resolve, reject) => {
 
 const editUserService = (requestBody) => new Promise((resolve, reject) => {
   const { id } = requestBody;
+
+  if (!utils.isEmpty(requestBody.email)) {
+    const { email } = requestBody;
+    checkExistingUser(email).then((existingUser) => {
+      if (!utils.isEmpty(existingUser)) {
+        reject(new ValidationError(
+          utils.generateErrorMessage(
+            'exist',
+            'email',
+          ),
+        ));
+      }
+    });
+  }
+
   let valuesToUpdate = '';
   Object.keys(requestBody).forEach((key) => {
     valuesToUpdate += `${key}='${requestBody[key]}' , `;
